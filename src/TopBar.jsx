@@ -1,13 +1,24 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+
 const TopBar = () => {
+    const { user, signOut } = useAuth();
+    const navigate = useNavigate();
+
+    const handleSignOut = async () => {
+        await signOut();
+        navigate("/");
+    };
+
     return (
         <nav className="bg-white shadow-sm border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo/App Name */}
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-xl font-bold text-gray-900">
-                            Wishlist
-                        </a>
+                        <Link to="/" className="text-xl font-bold text-gray-900">
+                            🍨 Wishlist
+                        </Link>
                     </div>
 
                     {/* Navigation Links */}
@@ -23,16 +34,33 @@ const TopBar = () => {
                         </a>
                     </div>
 
-                    {/* Login Button */}
-                    <div className="flex items-center">
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
-                            Log In
-                        </button>
+                    {/* Auth Button */}
+                    <div className="flex items-center gap-4">
+                        {user ? (
+                            <>
+                                <span className="text-sm text-gray-600 hidden sm:inline">
+                                    {user.email}
+                                </span>
+                                <button
+                                    onClick={handleSignOut}
+                                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"
+                                >
+                                    Log Out
+                                </button>
+                            </>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-md font-medium transition-colors"
+                            >
+                                Log In
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default TopBar
+export default TopBar;
