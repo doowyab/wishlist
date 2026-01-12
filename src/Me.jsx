@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { supabase } from "./supabaseClient";
+import usePageTitle from "./usePageTitle";
 
 const Me = () => {
+    usePageTitle("My Lists");
     const { user } = useAuth();
     const [lists, setLists] = useState([]);
     const [loading, setLoading] = useState(true);

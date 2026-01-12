@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { supabase } from "./supabaseClient";
+import usePageTitle from "./usePageTitle";
 
 const Create = () => {
+    usePageTitle("Create List");
     const { user } = useAuth();
     const navigate = useNavigate();
     const [name, setName] = useState("");

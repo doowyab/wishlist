@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import usePageTitle from "./usePageTitle";
 
-const Home = () => (
+const Home = () => {
+    usePageTitle("Home");
+
+    return (
     <div className="py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -71,6 +75,7 @@ const Home = () => (
             </a>
         </div>
     </div>
-)
+    );
+};
 
-export default Home
+export default Home;

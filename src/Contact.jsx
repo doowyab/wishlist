@@ -1,4 +1,8 @@
+import usePageTitle from "./usePageTitle";
+
 const Contact = () => {
+    usePageTitle("Contact");
+
     return (
         <div className="py-12 max-w-xl mx-auto text-center">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h1>
