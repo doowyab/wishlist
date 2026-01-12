@@ -21,26 +21,19 @@ const TopBar = () => {
                         </Link>
                     </div>
 
-                    {/* Navigation Links */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        <a href="/features" className="text-gray-600 hover:text-gray-900">
-                            Features
-                        </a>
-                        <a href="/pricing" className="text-gray-600 hover:text-gray-900">
-                            Pricing
-                        </a>
-                        <a href="/about" className="text-gray-600 hover:text-gray-900">
-                            About
-                        </a>
-                    </div>
-
-                    {/* Auth Button */}
+{/* Auth Button */}
                     <div className="flex items-center gap-4">
                         {user ? (
                             <>
                                 <span className="text-sm text-gray-600 hidden sm:inline">
                                     {user.email}
                                 </span>
+                                <Link
+                                    to="/me"
+                                    className="border border-pink-500 text-pink-500 hover:bg-pink-50 px-4 py-2 rounded-md font-medium transition-colors"
+                                >
+                                    My Lists
+                                </Link>
                                 <button
                                     onClick={handleSignOut}
                                     className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"

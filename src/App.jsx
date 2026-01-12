@@ -6,12 +6,14 @@ import List from "./List.jsx";
 import Admin from "./Admin.jsx";
 import Login from "./Login.jsx";
 import Create from "./Create.jsx";
-import ListAdmin from "./ListAdmin.jsx";
+import Me from "./Me.jsx";
+import Contact from "./Contact.jsx";
+import Footer from "./Footer.jsx";
 import { supabase } from "./supabaseClient";
 import { useAuth } from "./AuthContext";
 
 export default function App() {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const [lists, setLists] = useState([]);
 
     useEffect(() => {
@@ -24,20 +26,30 @@ export default function App() {
         fetchLists();
     }, []);
 
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-gray-500">Loading...</div>
+            </div>
+        );
+    }
+
     return (
-        <>
+        <div className="min-h-screen flex flex-col">
             <TopBar />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 w-full">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/create" element={<Create />} />
+                    <Route path="/me" element={<Me />} />
                     <Route path="/list/:listId" element={<List />} />
-                    <Route path="/list/:listId/admin" element={<ListAdmin />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<div>404 Not Found</div>} />
                 </Routes>
             </div>
-        </>
+            <Footer />
+        </div>
     );
 }
