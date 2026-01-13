@@ -8,6 +8,7 @@ const Me = () => {
     usePageTitle("My Lists");
     const { user } = useAuth();
     const [lists, setLists] = useState([]);
+    const [coOwnedLists, setCoOwnedLists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -16,16 +17,27 @@ const Me = () => {
 
         const fetchLists = async () => {
             setLoading(true);
-            const { data, error } = await supabase
-                .from("lists")
-                .select("*")
-                .eq("created_by", user.id)
-                .order("created_at", { ascending: false });
 
-            if (error) {
-                setError(error.message);
+            const [ownedResult, coOwnedResult] = await Promise.all([
+                supabase
+                    .from("lists")
+                    .select("*")
+                    .eq("created_by", user.id)
+                    .order("created_at", { ascending: false }),
+                supabase
+                    .from("lists")
+                    .select("*")
+                    .contains("co_owners", [user.id])
+                    .order("created_at", { ascending: false })
+            ]);
+
+            if (ownedResult.error) {
+                setError(ownedResult.error.message);
+            } else if (coOwnedResult.error) {
+                setError(coOwnedResult.error.message);
             } else {
-                setLists(data);
+                setLists(ownedResult.data);
+                setCoOwnedLists(coOwnedResult.data);
             }
             setLoading(false);
         };
@@ -87,6 +99,31 @@ const Me = () => {
                         </li>
                     ))}
                 </ul>
+            )}
+
+            {coOwnedLists.length > 0 && (
+                <>
+                    <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">Co-Owned Lists</h2>
+                    <ul className="space-y-4">
+                        {coOwnedLists.map((list) => (
+                            <li key={list.id} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                        <Link
+                                            to={`/list/${list.id}`}
+                                            className="text-xl font-semibold text-gray-900 hover:text-pink-500 transition-colors"
+                                        >
+                                            {list.name}
+                                        </Link>
+                                        {list.description && (
+                                            <p className="text-gray-600 mt-1">{list.description}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </>
             )}
         </div>
     );

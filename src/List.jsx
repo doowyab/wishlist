@@ -11,6 +11,7 @@ import PurchasesWarningModal from "./components/PurchasesWarningModal";
 import DeleteItemModal from "./components/DeleteItemModal";
 import EditItemModal from "./components/EditItemModal";
 import PurchaseHistoryModal from "./components/PurchaseHistoryModal";
+import CoOwnersModal from "./components/CoOwnersModal";
 import ItemCard from "./components/ItemCard";
 
 const List = () => {
@@ -36,9 +37,10 @@ const List = () => {
     const [editItem, setEditItem] = useState(null);
     const [showPurchaseHistoryModal, setShowPurchaseHistoryModal] = useState(false);
     const [purchaseHistoryItem, setPurchaseHistoryItem] = useState(null);
+    const [showCoOwnersModal, setShowCoOwnersModal] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    const isOwner = user && list?.created_by === user.id;
+    const isOwner = user && (list?.created_by === user.id || (list?.co_owners && list.co_owners.includes(user.id)));
 
     const handleShare = async () => {
         await navigator.clipboard.writeText(window.location.href);
@@ -53,7 +55,7 @@ const List = () => {
             setLoading(true);
 
             const [listResult, itemsResult] = await Promise.all([
-                supabase.from("lists").select("name, description, created_by").eq("id", listId).single(),
+                supabase.from("lists").select("name, description, created_by, co_owners").eq("id", listId).single(),
                 supabase.from("items").select("*, purchases(*)").eq("list_id", listId)
             ]);
 
@@ -145,6 +147,18 @@ const List = () => {
         setShowPurchaseHistoryModal(true);
     };
 
+    const handleCoOwnerAdded = (data) => {
+        if (data?.co_owners) {
+            setList({ ...list, co_owners: data.co_owners });
+        }
+    };
+
+    const handleCoOwnerRemoved = (newCoOwners) => {
+        setList({ ...list, co_owners: newCoOwners });
+    };
+
+    const isListCreator = user && list?.created_by === user.id;
+
     // Split items into unpurchased, multibuy, and purchased
     const multibuyItems = items.filter(item => item.is_multibuy);
     const unpurchasedItems = items.filter(item => !item.is_multibuy && (!item.purchases || item.purchases.length === 0));
@@ -218,6 +232,15 @@ const List = () => {
                                 Show Purchases
                             </button>
                         )}
+                        <button
+                            onClick={() => setShowCoOwnersModal(true)}
+                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            Co-Owners
+                        </button>
                     </>
                 )}
             </div>
@@ -402,6 +425,17 @@ const List = () => {
                         setShowPurchaseHistoryModal(false);
                         setPurchaseHistoryItem(null);
                     }}
+                />
+            )}
+
+            {showCoOwnersModal && (
+                <CoOwnersModal
+                    listId={listId}
+                    onClose={() => setShowCoOwnersModal(false)}
+                    onCoOwnerAdded={handleCoOwnerAdded}
+                    onCoOwnerRemoved={handleCoOwnerRemoved}
+                    supabase={supabase}
+                    isCreator={isListCreator}
                 />
             )}
         </div>

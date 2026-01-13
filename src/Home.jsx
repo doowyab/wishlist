@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import usePageTitle from "./usePageTitle";
 
 const Home = () => {
-    usePageTitle("Home");
+    usePageTitle("");
 
     return (
     <div className="py-12">

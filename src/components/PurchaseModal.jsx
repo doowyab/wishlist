@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const PurchaseModal = ({ itemId, user, onClose, onPurchased, supabase }) => {
-    const [name, setName] = useState(user?.email || "");
+    const [name, setName] = useState("");
     const [notes, setNotes] = useState("");
     const [formError, setFormError] = useState("");
 
