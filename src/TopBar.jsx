@@ -11,12 +11,12 @@ const TopBar = () => {
     };
 
     return (
-        <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo/App Name */}
                     <div className="flex-shrink-0">
-                        <Link to="/" className="text-xl font-bold text-gray-900">
+                        <Link to="/" className="text-xl font-bold text-gray-900 dark:text-white">
                             🛍️ Wishlist
                         </Link>
                     </div>
@@ -25,18 +25,18 @@ const TopBar = () => {
                     <div className="flex items-center gap-4">
                         {user ? (
                             <>
-                                <span className="text-sm text-gray-600 hidden sm:inline">
+                                <span className="text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">
                                     {user.email}
                                 </span>
                                 <Link
                                     to="/me"
-                                    className="border border-pink-500 text-pink-500 hover:bg-pink-50 px-4 py-2 rounded-md font-medium transition-colors"
+                                    className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 px-4 py-2 rounded-md font-medium transition-colors"
                                 >
                                     My Lists
                                 </Link>
                                 <button
                                     onClick={handleSignOut}
-                                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"
+                                    className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-md font-medium transition-colors"
                                 >
                                     Log Out
                                 </button>

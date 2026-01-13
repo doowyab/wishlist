@@ -2,32 +2,32 @@ const ItemCard = ({ item, isOwner, isPurchased, onPurchase, onEdit, onDelete, sh
     const hasPurchaseInfo = showPurchaseInfo && item.purchases && item.purchases.length > 0;
 
     return (
-        <li className={`bg-white rounded-2xl p-6 shadow-md ${isPurchased ? 'opacity-60' : 'hover:shadow-lg'} transition-shadow`}>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
+        <li className={`bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md ${isPurchased ? 'opacity-60' : 'hover:shadow-lg'} transition-shadow`}>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h3>
             {(isPurchased || item.is_multibuy || item.price) && (
                 <div className="flex flex-wrap gap-2 mb-3">
                     {isPurchased && (
-                        <span className="bg-green-100 text-green-600 font-semibold px-3 py-1 rounded-full text-sm">
+                        <span className="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 font-semibold px-3 py-1 rounded-full text-sm">
                             Purchased
                         </span>
                     )}
                     {item.is_multibuy && (
-                        <span className="bg-blue-100 text-blue-600 font-semibold px-3 py-1 rounded-full text-sm">
+                        <span className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">
                             Multibuy
                         </span>
                     )}
                     {item.price && (
-                        <span className="bg-pink-100 text-pink-600 font-semibold px-3 py-1 rounded-full text-sm">
+                        <span className="bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300 font-semibold px-3 py-1 rounded-full text-sm">
                             £{item.price.toFixed(2)}
                         </span>
                     )}
                 </div>
             )}
             {item.details && (
-                <p className="text-gray-600 mb-4">{item.details}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{item.details}</p>
             )}
             {hasPurchaseInfo && (
-                <div className="text-gray-600 mb-4 space-y-1">
+                <div className="text-gray-600 dark:text-gray-300 mb-4 space-y-1">
                     {isOwner && onShowPurchaseHistory ? (
                         <button
                             onClick={() => onShowPurchaseHistory(item)}
@@ -62,7 +62,7 @@ const ItemCard = ({ item, isOwner, isPurchased, onPurchase, onEdit, onDelete, sh
                     {onEdit && (
                         <button
                             onClick={() => onEdit(item)}
-                            className="inline-flex items-center text-gray-500 hover:text-pink-500 font-medium transition-colors"
+                            className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-pink-500 font-medium transition-colors"
                         >
                             Edit
                         </button>
@@ -70,7 +70,7 @@ const ItemCard = ({ item, isOwner, isPurchased, onPurchase, onEdit, onDelete, sh
                     {onDelete && (
                         <button
                             onClick={() => onDelete(item)}
-                            className="inline-flex items-center text-gray-500 hover:text-pink-500 font-medium transition-colors"
+                            className="inline-flex items-center text-gray-500 dark:text-gray-400 hover:text-pink-500 font-medium transition-colors"
                         >
                             Delete
                         </button>

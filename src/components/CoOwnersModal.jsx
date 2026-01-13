@@ -96,12 +96,12 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl p-8 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 w-full max-w-md max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Co-Owners</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Co-Owners</h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700"
+                        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -110,9 +110,9 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
                 </div>
 
                 <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3">Add New Co-Owner</h3>
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
-                        <p className="text-amber-800 text-sm">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Add New Co-Owner</h3>
+                    <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-3 mb-4">
+                        <p className="text-amber-800 dark:text-amber-200 text-sm">
                             You can only add people who already have access to this site.
                         </p>
                     </div>
@@ -121,13 +121,13 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors"
+                            className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                             placeholder="friend@example.com"
                         />
                         <button
                             type="submit"
                             disabled={adding}
-                            className="bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:cursor-not-allowed"
+                            className="bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 dark:disabled:bg-pink-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:cursor-not-allowed"
                         >
                             {adding ? "..." : "Add"}
                         </button>
@@ -136,35 +136,35 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
                 </div>
 
                 {loadingCoOwners ? (
-                    <p className="text-gray-500 text-sm">Loading...</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Loading...</p>
                 ) : fetchError ? (
                     <p className="text-red-500 text-sm">{fetchError}</p>
                 ) : (
                     <>
                         {creator && (
                             <div className="mb-6">
-                                <h3 className="text-sm font-semibold text-gray-700 mb-3">Owner</h3>
-                                <div className="flex items-center gap-3 p-3 bg-pink-50 rounded-lg border border-pink-100">
+                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Owner</h3>
+                                <div className="flex items-center gap-3 p-3 bg-pink-50 dark:bg-pink-900/30 rounded-lg border border-pink-100 dark:border-pink-800">
                                     <svg className="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <span className="text-gray-700">{creator.email}</span>
+                                    <span className="text-gray-700 dark:text-gray-200">{creator.email}</span>
                                 </div>
                             </div>
                         )}
 
                         <div>
-                            <h3 className="text-sm font-semibold text-gray-700 mb-3">Co-Owners</h3>
+                            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Co-Owners</h3>
                             {coOwners.length === 0 ? (
-                                <p className="text-gray-500 text-sm">No co-owners yet.</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm">No co-owners yet.</p>
                             ) : (
                                 <ul className="space-y-2">
                                     {coOwners.map((coOwner) => (
-                                        <li key={coOwner.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                        <li key={coOwner.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
-                                            <span className="text-gray-700 flex-1">{coOwner.email}</span>
+                                            <span className="text-gray-700 dark:text-gray-200 flex-1">{coOwner.email}</span>
                                             {isCreator && (
                                                 <button
                                                     onClick={() => handleRemoveCoOwner(coOwner)}

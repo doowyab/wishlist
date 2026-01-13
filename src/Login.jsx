@@ -43,10 +43,10 @@ const Login = () => {
 
     return (
         <div className="min-h-[70vh] flex items-center justify-center py-12">
-            <div className="bg-white rounded-3xl shadow-xl p-10 w-full max-w-md">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-10 w-full max-w-md">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Family & Friends Only</h1>
-                    <p className="text-gray-600">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Family & Friends Only</h1>
+                    <p className="text-gray-600 dark:text-gray-300">
                         This software was built for family and friends only. You can request login access to create your own lists by{" "}
                         <Link to="/contact" className="text-pink-500 hover:text-pink-600 font-medium">
                             contacting us
@@ -55,21 +55,21 @@ const Login = () => {
                 </div>
 
                 {message && (
-                    <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-6 text-center">
+                    <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 rounded-xl p-4 mb-6 text-center">
                         <p className="font-medium">{message}</p>
                         <p className="text-sm mt-1">The link will expire in 1 hour</p>
                     </div>
                 )}
 
                 {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 text-center">
+                    <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 rounded-xl p-4 mb-6 text-center">
                         <p className="font-medium">{error}</p>
                     </div>
                 )}
 
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Email address
                         </label>
                         <input
@@ -79,14 +79,14 @@ const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-all"
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                        className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 dark:disabled:bg-pink-800 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg disabled:cursor-not-allowed"
                     >
                         {loading ? (
                             <span className="flex items-center justify-center gap-2">
@@ -102,8 +102,8 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-                    <p className="text-gray-600 text-sm">
+                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
                         No password needed! We'll send you a secure link to sign in.
                     </p>
                 </div>

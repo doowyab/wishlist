@@ -5,8 +5,8 @@ const Contact = () => {
 
     return (
         <div className="py-12 max-w-xl mx-auto text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h1>
-            <p className="text-gray-600 mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-8">
                 Hey! Want to join in and create your own wishlists? Drop me a message and I'll get you set up. Also let me know if you spot any bugs!
             </p>
             <a

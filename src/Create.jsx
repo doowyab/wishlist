@@ -44,11 +44,11 @@ const Create = () => {
 
     return (
         <div className="py-12 max-w-xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Create Wishlist</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Create Wishlist</h1>
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label htmlFor="wishlist-name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="wishlist-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         List Name <span className="text-pink-500">*</span>
                     </label>
                     <input
@@ -56,14 +56,14 @@ const Create = () => {
                         id="wishlist-name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         placeholder="My Birthday Wishlist"
                     />
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                 </div>
 
                 <div>
-                    <label htmlFor="wishlist-description" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="wishlist-description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Description <span className="text-gray-400">(optional)</span>
                     </label>
                     <textarea
@@ -71,7 +71,7 @@ const Create = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         placeholder="Add some details about your wishlist..."
                     />
                 </div>

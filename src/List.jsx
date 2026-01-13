@@ -165,7 +165,7 @@ const List = () => {
     const purchasedItems = items.filter(item => !item.is_multibuy && item.purchases && item.purchases.length > 0);
 
     if (loading) {
-        return <div className="py-12 text-center text-gray-500">Loading...</div>;
+        return <div className="py-12 text-center text-gray-500 dark:text-gray-400">Loading...</div>;
     }
 
     if (error) {
@@ -175,15 +175,15 @@ const List = () => {
     return (
         <div className="py-12">
             <div className="mb-2">
-                <h1 className="text-3xl font-bold text-gray-900">{list?.name}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{list?.name}</h1>
             </div>
             {list?.description && (
-                <p className="text-gray-600 text-lg mb-2">{list.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 text-lg mb-2">{list.description}</p>
             )}
             <div className="flex flex-wrap gap-2 mb-4 mt-4">
                 <button
                     onClick={handleShare}
-                    className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                    className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -194,7 +194,7 @@ const List = () => {
                     <>
                         <button
                             onClick={() => setShowEditModal(true)}
-                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -203,7 +203,7 @@ const List = () => {
                         </button>
                         <button
                             onClick={() => setShowDeleteModal(true)}
-                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -213,7 +213,7 @@ const List = () => {
                         {showPurchases ? (
                             <button
                                 onClick={() => setShowPurchases(false)}
-                                className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                                className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
@@ -223,7 +223,7 @@ const List = () => {
                         ) : (
                             <button
                                 onClick={() => setShowPurchasesWarningModal(true)}
-                                className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                                className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -234,7 +234,7 @@ const List = () => {
                         )}
                         <button
                             onClick={() => setShowCoOwnersModal(true)}
-                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+                            className="border border-pink-500 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950 font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -250,12 +250,12 @@ const List = () => {
                 <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <li
                         onClick={() => setShowAddItemModal(true)}
-                        className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-pink-400 cursor-pointer flex flex-col items-center justify-center min-h-[150px]"
+                        className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-pink-400 cursor-pointer flex flex-col items-center justify-center min-h-[150px]"
                     >
-                        <svg className="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-10 h-10 text-gray-400 dark:text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
-                        <span className="text-gray-500 font-medium">Add Item</span>
+                        <span className="text-gray-500 dark:text-gray-400 font-medium">Add Item</span>
                     </li>
                     {items.map((item) => (
                         <ItemCard
@@ -269,7 +269,7 @@ const List = () => {
                     ))}
                 </ul>
             ) : items.length === 0 && !isOwner ? (
-                <p className="text-gray-500">No items in this list yet.</p>
+                <p className="text-gray-500 dark:text-gray-400">No items in this list yet.</p>
             ) : (
                 /* Non-owner view or owner with showPurchases - show unpurchased first, then purchased section */
                 <>
@@ -278,12 +278,12 @@ const List = () => {
                             {isOwner && (
                                 <li
                                     onClick={() => setShowAddItemModal(true)}
-                                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 hover:border-pink-400 cursor-pointer flex flex-col items-center justify-center min-h-[150px]"
+                                    className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-pink-400 cursor-pointer flex flex-col items-center justify-center min-h-[150px]"
                                 >
-                                    <svg className="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-10 h-10 text-gray-400 dark:text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                                     </svg>
-                                    <span className="text-gray-500 font-medium">Add Item</span>
+                                    <span className="text-gray-500 dark:text-gray-400 font-medium">Add Item</span>
                                 </li>
                             )}
                             {unpurchasedItems.map((item) => (
@@ -301,12 +301,12 @@ const List = () => {
                     )}
 
                     {unpurchasedItems.length === 0 && multibuyItems.length === 0 && purchasedItems.length > 0 && !isOwner && (
-                        <p className="text-gray-500 mb-8">All items have been purchased!</p>
+                        <p className="text-gray-500 dark:text-gray-400 mb-8">All items have been purchased!</p>
                     )}
 
                     {multibuyItems.length > 0 && (
                         <div className="mt-12">
-                            <h2 className="text-xl font-semibold text-gray-500 mb-6">Multibuy</h2>
+                            <h2 className="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-6">Multibuy</h2>
                             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 {multibuyItems.map((item) => (
                                     <ItemCard
@@ -327,7 +327,7 @@ const List = () => {
 
                     {purchasedItems.length > 0 && (
                         <div className="mt-12">
-                            <h2 className="text-xl font-semibold text-gray-500 mb-6">Already Purchased</h2>
+                            <h2 className="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-6">Already Purchased</h2>
                             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 {purchasedItems.map((item) => (
                                     <ItemCard
