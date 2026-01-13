@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
-    const [title, setTitle] = useState("");
-    const [url, setUrl] = useState("");
-    const [details, setDetails] = useState("");
-    const [price, setPrice] = useState("");
-    const [isMultibuy, setIsMultibuy] = useState(false);
+const EditItemModal = ({ item, onClose, onItemUpdated, supabase }) => {
+    const [title, setTitle] = useState(item.title || "");
+    const [url, setUrl] = useState(item.url || "");
+    const [details, setDetails] = useState(item.details || "");
+    const [price, setPrice] = useState(item.price?.toString() || "");
+    const [isMultibuy, setIsMultibuy] = useState(item.is_multibuy || false);
     const [formError, setFormError] = useState("");
 
     const handleSubmit = async (e) => {
@@ -17,24 +17,25 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
             return;
         }
 
-        const { data, error: apiError } = await supabase
+        const updates = {
+            title: title.trim(),
+            url: url.trim() || null,
+            details: details.trim() || null,
+            price: price ? parseFloat(price) : null,
+            is_multibuy: isMultibuy
+        };
+
+        const { error: apiError } = await supabase
             .from("items")
-            .insert({
-                list_id: listId,
-                title: title.trim(),
-                url: url.trim() || null,
-                details: details.trim() || null,
-                price: price ? parseFloat(price) : null,
-                is_multibuy: isMultibuy
-            })
-            .select();
+            .update(updates)
+            .eq("id", item.id);
 
         if (apiError) {
             setFormError(apiError.message);
             return;
         }
 
-        onItemAdded(data[0]);
+        onItemUpdated(item.id, updates);
         onClose();
     };
 
@@ -42,7 +43,7 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl p-8 w-full max-w-md max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Add Item</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Edit Item</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-500 hover:text-gray-700"
@@ -55,12 +56,12 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 mb-2">
                             Title <span className="text-pink-500">*</span>
                         </label>
                         <input
                             type="text"
-                            id="title"
+                            id="edit-title"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors"
@@ -70,12 +71,12 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
                     </div>
 
                     <div>
-                        <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="edit-url" className="block text-sm font-medium text-gray-700 mb-2">
                             URL <span className="text-gray-400">(optional)</span>
                         </label>
                         <input
                             type="url"
-                            id="url"
+                            id="edit-url"
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors"
@@ -84,11 +85,11 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
                     </div>
 
                     <div>
-                        <label htmlFor="details" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="edit-details" className="block text-sm font-medium text-gray-700 mb-2">
                             Details <span className="text-gray-400">(optional)</span>
                         </label>
                         <textarea
-                            id="details"
+                            id="edit-details"
                             value={details}
                             onChange={(e) => setDetails(e.target.value)}
                             rows={3}
@@ -98,12 +99,12 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
                     </div>
 
                     <div>
-                        <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="edit-price" className="block text-sm font-medium text-gray-700 mb-2">
                             Price <span className="text-gray-400">(optional)</span>
                         </label>
                         <input
                             type="number"
-                            id="price"
+                            id="edit-price"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             step="0.01"
@@ -116,12 +117,12 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
                     <div className="flex items-center gap-3">
                         <input
                             type="checkbox"
-                            id="is-multibuy"
+                            id="edit-is-multibuy"
                             checked={isMultibuy}
                             onChange={(e) => setIsMultibuy(e.target.checked)}
                             className="w-5 h-5 text-pink-500 border-gray-300 rounded focus:ring-pink-500"
                         />
-                        <label htmlFor="is-multibuy" className="text-sm font-medium text-gray-700">
+                        <label htmlFor="edit-is-multibuy" className="text-sm font-medium text-gray-700">
                             Multiple people can buy this item
                         </label>
                     </div>
@@ -130,7 +131,7 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
                         type="submit"
                         className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-lg hover:shadow-xl"
                     >
-                        Add Item
+                        Save Changes
                     </button>
                 </form>
             </div>
@@ -138,4 +139,4 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
     );
 };
 
-export default AddItemModal;
+export default EditItemModal;

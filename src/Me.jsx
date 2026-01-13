@@ -37,23 +37,6 @@ const Me = () => {
         return <Navigate to="/login" replace />;
     }
 
-    const handleDelete = async (listId) => {
-        if (!window.confirm("Are you sure you want to delete this list?")) {
-            return;
-        }
-
-        const { error } = await supabase
-            .from("lists")
-            .delete()
-            .eq("id", listId);
-
-        if (error) {
-            alert(error.message);
-        } else {
-            setLists(lists.filter((list) => list.id !== listId));
-        }
-    };
-
     if (loading) {
         return <div className="py-12 text-center text-gray-500">Loading...</div>;
     }
@@ -99,17 +82,6 @@ const Me = () => {
                                     {list.description && (
                                         <p className="text-gray-600 mt-1">{list.description}</p>
                                     )}
-                                </div>
-                                <div className="flex gap-2 ml-4">
-                                    <button
-                                        onClick={() => handleDelete(list.id)}
-                                        className="text-gray-500 hover:text-red-500 p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                                        title="Delete list"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
                         </li>

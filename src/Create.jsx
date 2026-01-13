@@ -48,12 +48,12 @@ const Create = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="wishlist-name" className="block text-sm font-medium text-gray-700 mb-2">
                         List Name <span className="text-pink-500">*</span>
                     </label>
                     <input
                         type="text"
-                        id="name"
+                        id="wishlist-name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-colors"
@@ -63,11 +63,11 @@ const Create = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="wishlist-description" className="block text-sm font-medium text-gray-700 mb-2">
                         Description <span className="text-gray-400">(optional)</span>
                     </label>
                     <textarea
-                        id="description"
+                        id="wishlist-description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={4}
