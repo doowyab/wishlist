@@ -9,7 +9,7 @@ import Create from "./Create.jsx";
 import Me from "./Me.jsx";
 import Contact from "./Contact.jsx";
 import Footer from "./Footer.jsx";
-import { supabase } from "./supabaseClient";
+import { db } from "./db";
 import { useAuth } from "./AuthContext";
 
 export default function App() {
@@ -18,7 +18,7 @@ export default function App() {
 
     useEffect(() => {
         const fetchLists = async () => {
-            let { data, error } = await supabase
+            let { data, error } = await db
                 .from('lists')
                 .select('name')
             setLists(data);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "./supabaseClient";
+import { db } from "./db";
 import { useAuth } from "./AuthContext";
 import usePageTitle from "./usePageTitle";
 import AddItemModal from "./components/AddItemModal";
@@ -55,8 +55,8 @@ const List = () => {
             setLoading(true);
 
             const [listResult, itemsResult] = await Promise.all([
-                supabase.from("lists").select("name, description, created_by, co_owners").eq("id", listId).single(),
-                supabase.from("items").select("*, purchases(*)").eq("list_id", listId)
+                db.from("lists").select("name, description, created_by, co_owners").eq("id", listId).single(),
+                db.from("items").select("*, purchases(*)").eq("list_id", listId)
             ]);
 
             if (listResult.error) {
@@ -82,7 +82,7 @@ const List = () => {
     };
 
     const handleDeleteList = async () => {
-        const { error: apiError } = await supabase
+        const { error: apiError } = await db
             .from("lists")
             .delete()
             .eq("id", listId);
@@ -116,7 +116,7 @@ const List = () => {
     const handleDeleteItem = async () => {
         if (!deleteItem) return;
 
-        const { error: apiError } = await supabase
+        const { error: apiError } = await db
             .from("items")
             .delete()
             .eq("id", deleteItem.id);
@@ -353,7 +353,7 @@ const List = () => {
                     listId={listId}
                     onClose={() => setShowAddItemModal(false)}
                     onItemAdded={handleItemAdded}
-                    supabase={supabase}
+                    db={db}
                 />
             )}
 
@@ -363,7 +363,7 @@ const List = () => {
                     listId={listId}
                     onClose={() => setShowEditModal(false)}
                     onListUpdated={handleListUpdated}
-                    supabase={supabase}
+                    db={db}
                 />
             )}
 
@@ -381,7 +381,7 @@ const List = () => {
                     user={user}
                     onClose={() => setShowPurchaseModal(false)}
                     onPurchased={handlePurchased}
-                    supabase={supabase}
+                    db={db}
                 />
             )}
 
@@ -414,7 +414,7 @@ const List = () => {
                         setEditItem(null);
                     }}
                     onItemUpdated={handleItemUpdated}
-                    supabase={supabase}
+                    db={db}
                 />
             )}
 
@@ -434,7 +434,7 @@ const List = () => {
                     onClose={() => setShowCoOwnersModal(false)}
                     onCoOwnerAdded={handleCoOwnerAdded}
                     onCoOwnerRemoved={handleCoOwnerRemoved}
-                    supabase={supabase}
+                    db={db}
                     isCreator={isListCreator}
                 />
             )}

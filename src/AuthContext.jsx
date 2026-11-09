@@ -1,32 +1,35 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "./supabaseClient";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { db } from "./db";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+    // Neon Auth session data: { session, user } or null when signed out.
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        // Get initial session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-            setLoading(false);
-        });
-
-        // Listen for auth changes
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-        });
-
-        return () => subscription.unsubscribe();
+    const refreshSession = useCallback(async () => {
+        try {
+            const { data } = await db.auth.getSession();
+            setSession(data?.user ? data : null);
+            return data?.user ? data : null;
+        } catch (error) {
+            console.error("Failed to load session:", error);
+            setSession(null);
+            return null;
+        }
     }, []);
 
+    useEffect(() => {
+        refreshSession().finally(() => setLoading(false));
+    }, [refreshSession]);
+
     const signOut = async () => {
-        await supabase.auth.signOut();
-        setSession(null);
+        try {
+            await db.auth.signOut();
+        } finally {
+            setSession(null);
+        }
     };
 
     const value = {
@@ -34,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         user: session?.user ?? null,
         loading,
         signOut,
+        refreshSession,
     };
 
     return (

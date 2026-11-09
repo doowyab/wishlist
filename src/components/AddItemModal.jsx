@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
+const AddItemModal = ({ listId, onClose, onItemAdded, db }) => {
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [details, setDetails] = useState("");
@@ -17,7 +17,7 @@ const AddItemModal = ({ listId, onClose, onItemAdded, supabase }) => {
             return;
         }
 
-        const { data, error: apiError } = await supabase
+        const { data, error: apiError } = await db
             .from("items")
             .insert({
                 list_id: listId,

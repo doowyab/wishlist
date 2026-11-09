@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "./supabaseClient";
+import { db } from "./db";
 import { useAuth } from "./AuthContext";
 import usePageTitle from "./usePageTitle";
 
 const Login = () => {
     usePageTitle("Login");
     const [email, setEmail] = useState("");
+    const [code, setCode] = useState("");
+    const [codeSent, setCodeSent] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, refreshSession } = useAuth();
 
     // Redirect if user is already logged in
     useEffect(() => {
@@ -26,19 +28,43 @@ const Login = () => {
         setMessage(null);
         setError(null);
 
-        const { error } = await supabase.auth.signInWithOtp({
-            email,
-            options: {
-                emailRedirectTo: `${window.location.origin}/wishlist/`,
-            },
-        });
-
-        if (error) {
-            setError(error.message);
-        } else {
-            setMessage("Check your email for the magic link!");
+        try {
+            await db.auth.emailOtp.sendVerificationOtp({ email: email.trim(), type: "sign-in" });
+            setCodeSent(true);
+            setMessage(`We've emailed a sign-in code to ${email.trim()}`);
+        } catch (err) {
+            setError(err.message || "Couldn't send a code. Please try again.");
         }
         setLoading(false);
+    };
+
+    const handleVerify = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        try {
+            await db.auth.signIn.emailOtp({ email: email.trim(), otp: code.trim() });
+        } catch (err) {
+            console.error("Sign-in failed:", err);
+            setLoading(false);
+            setError("That code didn't work. Check it and try again, or request a new one.");
+            return;
+        }
+
+        // Loading the session sets `user`, and the effect above redirects home.
+        const signedIn = await refreshSession();
+        setLoading(false);
+        if (!signedIn) {
+            setError("Your code was accepted, but your browser blocked the login cookie. Please try a different browser.");
+        }
+    };
+
+    const startOver = () => {
+        setCodeSent(false);
+        setCode("");
+        setMessage(null);
+        setError(null);
     };
 
     return (
@@ -57,7 +83,7 @@ const Login = () => {
                 {message && (
                     <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 rounded-xl p-4 mb-6 text-center">
                         <p className="font-medium">{message}</p>
-                        <p className="text-sm mt-1">The link will expire in 1 hour</p>
+                        <p className="text-sm mt-1">Enter it below. The code expires in a few minutes.</p>
                     </div>
                 )}
 
@@ -67,6 +93,43 @@ const Login = () => {
                     </div>
                 )}
 
+                {codeSent ? (
+                <form onSubmit={handleVerify} className="space-y-6">
+                    <div>
+                        <label htmlFor="code" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Sign-in code
+                        </label>
+                        <input
+                            id="code"
+                            type="text"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            placeholder="123456"
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            required
+                            autoFocus
+                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white tracking-widest text-center text-lg"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 dark:disabled:bg-pink-800 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                    >
+                        {loading ? "Signing in..." : "Sign In"}
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={startOver}
+                        className="w-full text-sm text-pink-500 hover:text-pink-600 font-medium"
+                    >
+                        Use a different email or resend the code
+                    </button>
+                </form>
+                ) : (
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -97,14 +160,15 @@ const Login = () => {
                                 Sending...
                             </span>
                         ) : (
-                            "Send Magic Link"
+                            "Email Me a Code"
                         )}
                     </button>
                 </form>
+                )}
 
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
                     <p className="text-gray-600 dark:text-gray-400 text-sm">
-                        No password needed! We'll send you a secure link to sign in.
+                        No password needed! We'll email you a one-time code to sign in.
                     </p>
                 </div>
             </div>

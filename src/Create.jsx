@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { supabase } from "./supabaseClient";
+import { db } from "./db";
 import usePageTitle from "./usePageTitle";
 
 const Create = () => {
@@ -25,7 +25,7 @@ const Create = () => {
             return;
         }
 
-        const { data, error: apiError } = await supabase
+        const { data, error: apiError } = await db
             .from("lists")
             .insert({
                 name: name.trim(),

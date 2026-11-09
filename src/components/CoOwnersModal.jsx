@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supabase, isCreator }) => {
+const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, db, isCreator }) => {
     const [email, setEmail] = useState("");
     const [adding, setAdding] = useState(false);
     const [formError, setFormError] = useState("");
@@ -15,8 +15,8 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
             setLoadingCoOwners(true);
             setFetchError("");
 
-            const { data, error } = await supabase.functions.invoke('get-co-owners', {
-                body: { listId }
+            const { data, error } = await db.rpc('get_co_owners', {
+                p_list_id: listId
             });
 
             if (error) {
@@ -31,7 +31,7 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
         };
 
         fetchCoOwners();
-    }, [listId, supabase]);
+    }, [listId, db]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,11 +44,9 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
 
         setAdding(true);
 
-        const { data, error } = await supabase.functions.invoke('add-co-owner', {
-            body: {
-                listId: listId,
-                coOwnerEmail: email.trim()
-            }
+        const { data, error } = await db.rpc('add_co_owner', {
+            p_list_id: listId,
+            p_co_owner_email: email.trim()
         });
 
         if (error) {
@@ -61,12 +59,16 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
         setAdding(false);
 
         if (error) {
-            setFormError("Failed to add co-owner. Please try again.");
+            setFormError(error.message === "User not found"
+                ? "No user with that email has access to this site."
+                : "Failed to add co-owner. Please try again.");
             return;
         }
 
-        // Add to local list
-        setCoOwners([...coOwners, { email: email.trim() }]);
+        // Add to local list (skip if they were already a co-owner)
+        if (!coOwners.some(co => co.id === data.coOwner.id)) {
+            setCoOwners([...coOwners, data.coOwner]);
+        }
         setEmail("");
         onCoOwnerAdded(data);
     };
@@ -78,7 +80,7 @@ const CoOwnersModal = ({ listId, onClose, onCoOwnerAdded, onCoOwnerRemoved, supa
             .filter(co => co.id !== coOwnerToRemove.id)
             .map(co => co.id);
 
-        const { error } = await supabase
+        const { error } = await db
             .from("lists")
             .update({ co_owners: newCoOwnerIds })
             .eq("id", listId);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const PurchaseModal = ({ itemId, user, onClose, onPurchased, supabase }) => {
+const PurchaseModal = ({ itemId, user, onClose, onPurchased, db }) => {
     const [name, setName] = useState("");
     const [notes, setNotes] = useState("");
     const [formError, setFormError] = useState("");
@@ -14,7 +14,7 @@ const PurchaseModal = ({ itemId, user, onClose, onPurchased, supabase }) => {
             return;
         }
 
-        const { error: apiError } = await supabase
+        const { error: apiError } = await db
             .from("purchases")
             .insert({
                 item_id: itemId,

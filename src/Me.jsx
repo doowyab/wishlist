@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { supabase } from "./supabaseClient";
+import { db } from "./db";
 import usePageTitle from "./usePageTitle";
 
 const Me = () => {
@@ -19,12 +19,12 @@ const Me = () => {
             setLoading(true);
 
             const [ownedResult, coOwnedResult] = await Promise.all([
-                supabase
+                db
                     .from("lists")
                     .select("*")
                     .eq("created_by", user.id)
                     .order("created_at", { ascending: false }),
-                supabase
+                db
                     .from("lists")
                     .select("*")
                     .contains("co_owners", [user.id])

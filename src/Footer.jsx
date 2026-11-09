@@ -8,12 +8,20 @@ const Footer = () => {
                     <p className="text-gray-600 dark:text-gray-400">
                         Made with <span className="text-pink-500">❤️</span> by doowyab
                     </p>
-                    <Link
-                        to="/contact"
-                        className="text-gray-600 dark:text-gray-400 hover:text-pink-500 transition-colors"
-                    >
-                        Contact
-                    </Link>
+                    <div className="flex items-center gap-6">
+                        <a
+                            href="https://doowyab.github.io/recipes/"
+                            className="text-gray-600 dark:text-gray-400 hover:text-pink-500 transition-colors"
+                        >
+                            Recipes
+                        </a>
+                        <Link
+                            to="/contact"
+                            className="text-gray-600 dark:text-gray-400 hover:text-pink-500 transition-colors"
+                        >
+                            Contact
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

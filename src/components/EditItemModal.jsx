@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const EditItemModal = ({ item, onClose, onItemUpdated, supabase }) => {
+const EditItemModal = ({ item, onClose, onItemUpdated, db }) => {
     const [title, setTitle] = useState(item.title || "");
     const [url, setUrl] = useState(item.url || "");
     const [details, setDetails] = useState(item.details || "");
@@ -25,7 +25,7 @@ const EditItemModal = ({ item, onClose, onItemUpdated, supabase }) => {
             is_multibuy: isMultibuy
         };
 
-        const { error: apiError } = await supabase
+        const { error: apiError } = await db
             .from("items")
             .update(updates)
             .eq("id", item.id);

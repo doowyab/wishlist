@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const EditListModal = ({ list, listId, onClose, onListUpdated, supabase }) => {
+const EditListModal = ({ list, listId, onClose, onListUpdated, db }) => {
     const [name, setName] = useState(list?.name || "");
     const [description, setDescription] = useState(list?.description || "");
     const [formError, setFormError] = useState("");
@@ -14,7 +14,7 @@ const EditListModal = ({ list, listId, onClose, onListUpdated, supabase }) => {
             return;
         }
 
-        const { error: apiError } = await supabase
+        const { error: apiError } = await db
             .from("lists")
             .update({
                 name: name.trim(),
